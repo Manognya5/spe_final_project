@@ -14,9 +14,29 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: frontend:latest
+        image: frontend:v1
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
         env:
         - name: BACKEND_URL
-          value: "http://hello-world.local/api/hello"
+          value: "http://backend:5000"
+
+        # Database connection details from secret
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_DB
+        - name: DB_HOST
+          value: "postgres-service"   # Matches the name of your Postgres Kubernetes Service

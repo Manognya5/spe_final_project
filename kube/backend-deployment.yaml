@@ -15,5 +15,25 @@ spec:
       containers:
       - name: backend
         image: backend:v1
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
+        env:
+        # Database credentials from the Kubernetes Secret
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_DB
+        - name: DB_HOST
+          value: "postgres-service"   # This should match your PostgreSQL service name
