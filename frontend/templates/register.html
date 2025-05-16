@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Registration</h3>
+                        <form method="post" action="/register">
+                            <!-- Role toggle -->
+                            <div class="form-check form-switch mb-4">
+                                <input class="form-check-input" type="checkbox" id="roleToggle">
+                                <label class="form-check-label" for="roleToggle" id="roleLabel">User</label>
+                                <input type="hidden" name="role" id="roleValue" value="user">
+                            </div>
+
+                            <!-- Common Fields -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username" id="username" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" required>
+                            </div>
+
+                            <!-- User-specific fields -->
+                            <div id="userFields">
+                                <div class="mb-3">
+                                    <label for="respiratory_ailments" class="form-label">Respiratory Ailments</label>
+                                    <input type="text" class="form-control" name="respiratory_ailments" id="respiratory_ailments" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="phone_number" class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" name="phone_number" id="phone_number" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="permanent_location" class="form-label">Permanent Location</label>
+                                    <input type="text" class="form-control" name="permanent_location" id="permanent_location" required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to toggle user/admin fields -->
+    <script>
+        const roleToggle = document.getElementById('roleToggle');
+        const roleValue = document.getElementById('roleValue');
+        const roleLabel = document.getElementById('roleLabel');
+        const userFields = document.getElementById('userFields');
+
+        roleToggle.addEventListener('change', () => {
+            if (roleToggle.checked) {
+                roleLabel.textContent = 'Admin';
+                roleValue.value = 'admin';
+                userFields.style.display = 'none';
+                // remove required
+                userFields.querySelectorAll('input').forEach(i => i.required = false);
+            } else {
+                roleLabel.textContent = 'User';
+                roleValue.value = 'user';
+                userFields.style.display = 'block';
+                // add required
+                userFields.querySelectorAll('input').forEach(i => i.required = true);
+            }
+        });
+
+        // Set default display state
+        userFields.style.display = 'block';
+    </script>
+</body>
+</html>
