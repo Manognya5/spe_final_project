@@ -15,6 +15,7 @@ spec:
       containers:
       - name: postgres
         image: postgres:15
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
         env:
@@ -39,7 +40,6 @@ spec:
           mountPath: /var/lib/postgresql/data
         - name: init-scripts
           mountPath: /docker-entrypoint-initdb.d
-          subPath: init.sql
       volumes:
       - name: postgres-storage
         persistentVolumeClaim:
