@@ -1,7 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 import os
 import psycopg2
+import json
 
 app = Flask(__name__)
 
@@ -32,12 +33,33 @@ def index():
         response = requests.get(BACKEND_URL+"/api/hello")
         print("hello done")
         message = response.json().get('message', 'No message from backend.')
-        # response = requests.get(BACKEND_URL+"/api/data")
+        response = requests.get(BACKEND_URL+"/api/data")
+        print(type(response))
+        aqi_dumps = json.dumps(response)
+        aqi_live_data = json.loads(aqi_dumps)
+        
         response = "something"
     except Exception as e:
         message = f"Error: {e}"
         response = f"Error: {e}"
-    return render_template('index.html', message=message, response=response)
+    return render_template('index.html', message=message, aqi_dumps=aqi_dumps, aqi_live_data=aqi_live_data, length=len(response))
 
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        username = request.form['username']
+        password = request.form['username']
+        role = request.form.get('role')
+        payload = {
+            'username': username,
+            'password': password, 
+            'role': role
+        }
+
+        response = requests.post(BACKEND_URL+"/api/login", json=payload) # get 200 + user id or error and send that
+    except Exception as e:
+        print(f"Error {e}")
+        message = f"{e}"
+    return render_template('index.html', message=response)
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
