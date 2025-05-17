@@ -22,18 +22,18 @@
               <a class="nav-link" href="#">AQI Prediction</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/pull_live_data">Pull live data</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
-              </li>
+              <a class="nav-link" href="#">Logout</a>
+            </li>
+            
           </ul>
         </div>
       </nav>
     <div class="container py-4">
 
         <h2 class="mb-4">Today's Air Quality</h2>
-        <p style="color:red;">{{message}}</p>
 
         <div class="row g-3 mb-4">
             <div class="col-md-3">
@@ -66,8 +66,7 @@
     </div>
 
     <script>
-        const airData = JSON.parse(`{{ aqi_dumps | safe }}`);
-        console.log(airData)
+        const airData = JSON.parse(`{{ aqi_dumps|safe }}`);
 
         const stateSelect = document.getElementById('stateSelect');
         const citySelect = document.getElementById('citySelect');

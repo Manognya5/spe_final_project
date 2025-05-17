@@ -22,10 +22,10 @@
               <a class="nav-link" href="#">AQI Prediction</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
+              <a class="nav-link" href="#">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
+                <a class="nav-link" href="#">Register</a>
               </li>
           </ul>
         </div>
@@ -33,7 +33,6 @@
     <div class="container py-4">
 
         <h2 class="mb-4">Today's Air Quality</h2>
-        <p style="color:red;">{{message}}</p>
 
         <div class="row g-3 mb-4">
             <div class="col-md-3">
@@ -66,8 +65,116 @@
     </div>
 
     <script>
-        const airData = JSON.parse(`{{ aqi_dumps | safe }}`);
-        console.log(airData)
+        const airData = [
+          {
+            "city": "Hyderabad",
+            "co_avg": "12",
+            "co_max": "10",
+            "co_min": "25",
+            "last_updated": "Thu, 15 May 2025 20:00:00 GMT",
+            "nh3_avg": "7",
+            "nh3_max": "4",
+            "nh3_min": "9",
+            "no2_avg": "44",
+            "no2_max": "60",
+            "no2_min": "26",
+            "ozone_avg": "23",
+            "ozone_max": "5",
+            "ozone_min": "24",
+            "pm10_avg": "40",
+            "pm10_max": "78",
+            "pm10_min": "11",
+            "pm2_avg": "26",
+            "pm2_max": "44",
+            "pm2_min": "10",
+            "so2_avg": "6",
+            "so2_max": "4",
+            "so2_min": "8",
+            "state": "Telangana",
+            "station": "Central University, Hyderabad - TSPCB"
+          },
+          {
+            "city": "Hyderabad",
+            "co_avg": "12",
+            "co_max": "10",
+            "co_min": "25",
+            "last_updated": "Thu, 15 May 2025 20:00:00 GMT",
+            "nh3_avg": "7",
+            "nh3_max": "4",
+            "nh3_min": "9",
+            "no2_avg": "44",
+            "no2_max": "60",
+            "no2_min": "26",
+            "ozone_avg": "23",
+            "ozone_max": "5",
+            "ozone_min": "24",
+            "pm10_avg": "40",
+            "pm10_max": "78",
+            "pm10_min": "11",
+            "pm2_avg": "26",
+            "pm2_max": "44",
+            "pm2_min": "10",
+            "so2_avg": "6",
+            "so2_max": "4",
+            "so2_min": "8",
+            "state": "Telangana",
+            "station": "Hafeezpet, Hyderabad - TSPCB"
+          },
+          {
+            "city": "Hyderabad",
+            "co_avg": "12",
+            "co_max": "10",
+            "co_min": "25",
+            "last_updated": "Thu, 15 May 2025 19:00:00 GMT",
+            "nh3_avg": "7",
+            "nh3_max": "4",
+            "nh3_min": "9",
+            "no2_avg": "44",
+            "no2_max": "60",
+            "no2_min": "26",
+            "ozone_avg": "23",
+            "ozone_max": "5",
+            "ozone_min": "24",
+            "pm10_avg": "40",
+            "pm10_max": "78",
+            "pm10_min": "11",
+            "pm2_avg": "26",
+            "pm2_max": "44",
+            "pm2_min": "10",
+            "so2_avg": "6",
+            "so2_max": "4",
+            "so2_min": "8",
+            "state": "Telangana",
+            "station": "Hafeezpet, Hyderabad - TSPCB"
+          },
+          {
+            "city": "Bengaluru",
+            "co_avg": "12",
+            "co_max": "10",
+            "co_min": "25",
+            "last_updated": "Thu, 15 May 2025 20:00:00 GMT",
+            "nh3_avg": "7",
+            "nh3_max": "4",
+            "nh3_min": "9",
+            "no2_avg": "100",
+            "no2_max": "60",
+            "no2_min": "26",
+            "ozone_avg": "23",
+            "ozone_max": "5",
+            "ozone_min": "24",
+            "pm10_avg": "40",
+            "pm10_max": "78",
+            "pm10_min": "11",
+            "pm2_avg": "26",
+            "pm2_max": "44",
+            "pm2_min": "10",
+            "so2_avg": "6",
+            "so2_max": "4",
+            "so2_min": "8",
+            "state": "Karnataka",
+            "station": "City Railway Station, Bengaluru - KSPCB"
+          }
+        ];
 
         const stateSelect = document.getElementById('stateSelect');
         const citySelect = document.getElementById('citySelect');

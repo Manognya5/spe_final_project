@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS admin_users (
 
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL,
-    username VARCHAR NOT NULL,
+    username VARCHAR NOT NULL UNIQUE,
     password VARCHAR NOT NULL,
     respiratory_ailments VARCHAR NOT NULL,
     phone_number VARCHAR NOT NULL UNIQUE,
