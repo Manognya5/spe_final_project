@@ -101,7 +101,7 @@ def recommend():
         response = requests.post(BACKEND_URL + "/api/recommendation", json=payload)
         response = response.json()
 
-        print(response.json()['status'], "  ento ", response.json()['msg'])
+        logging.info(f"{response['status']} entooo {response['msg']}")
         return render_template("recommendation.html", message=response['output'])
     else:
         return redirect("/")

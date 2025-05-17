@@ -179,7 +179,13 @@
 
             if (entry) {
                 const pollutants = ['co', 'nh3', 'no2', 'ozone', 'pm10', 'pm2', 'so2'];
-                const aqi = Math.max(...pollutants.map(p => parseFloat(entry[`${p}_avg`])));
+                const aqi = Math.max(
+  ...pollutants
+    .map(p => parseFloat(entry[`${p}_avg`]))
+    .filter(val => val !== null && !isNaN(val))
+);
+
+
                 const pollutantName = pollutants.reduce((maxP, p) => parseFloat(entry[`${p}_avg`]) > parseFloat(entry[`${maxP}_avg`]) ? p : maxP, pollutants[0]).toUpperCase();
 
                 const aqiCategory = getAQICategory(aqi);

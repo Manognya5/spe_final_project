@@ -28,7 +28,7 @@ def generate_recommendation(aqi, location, respiratory_ailments):
     genai.configure(api_key="AIzaSyA_a9dk5E0LvqTsDl8n5qmGjOckX4p8T4M")
 
     model = genai.GenerativeModel("gemini-2.0-flash")
-    content = f"I stay in {location}, I have {respiratory_ailments} and the current AQI here is {aqi}, can you generate some precautions to take and any emergency hospitals if required?"
+    content = f"I stay in {location}, I have {respiratory_ailments} and taccording to the current AQI, can you generate some precautions to take and any emergency hospitals if required?"
 
     response = model.generate_content(content)
 
@@ -177,16 +177,23 @@ def recommend():
 
                     cur.execute("""
                         SELECT GREATEST(
-                            NULLIF(PM10_avg, '')::FLOAT,
-                            NULLIF(PM2_avg, '')::FLOAT,
-                            NULLIF(NO2_avg, '')::FLOAT,
-                            NULLIF(NH3_avg, '')::FLOAT,
-                            NULLIF(SO2_avg, '')::FLOAT,
-                            NULLIF(CO_avg, '')::FLOAT,
-                            NULLIF(OZONE_avg, '')::FLOAT
+                            NULLIF(PM10_avg, 'NA')::FLOAT,
+                            NULLIF(PM2_avg, 'NA')::FLOAT,
+                            NULLIF(NO2_avg, 'NA')::FLOAT,
+                            NULLIF(NH3_avg, 'NA')::FLOAT,
+                            NULLIF(SO2_avg, 'NA')::FLOAT,
+                            NULLIF(CO_avg, 'NA')::FLOAT,
+                            NULLIF(OZONE_avg, 'NA')::FLOAT
                         ) AS max_avg_pollutant
                         FROM aqi_data_24hr
                         WHERE station = %s
+                        AND PM10_avg IS NOT NULL
+                        AND PM2_avg IS NOT NULL
+                        AND NO2_avg IS NOT NULL
+                        AND NH3_avg IS NOT NULL
+                        AND SO2_avg IS NOT NULL
+                        AND CO_avg IS NOT NULL
+                        AND OZONE_avg IS NOT NULL
                         ORDER BY last_updated DESC
                         LIMIT 1;
                         """, (permanent_location,))
@@ -194,7 +201,7 @@ def recommend():
 
                     result = cur.fetchone()
                     print(result)
-                    output += generate_recommendation(result[0], permanent_location, repiratory_ailments)
+                    output += generate_recommendation(result, permanent_location, repiratory_ailments)
 
                     print("genai op:" + output)
 
@@ -202,11 +209,11 @@ def recommend():
                 conn.close()
                 return jsonify({"status": html_code, "msg": msg, "output": output})
             else:
-                return jsonify({"status": 500, "msg": "no conn", "output": "Our genai model is taking too much time to load"})
+                return jsonify({"status": 500, "msg": "no conn", "output": "Our genai model is taking too much time to load no conn"})
 
 
         except Exception as e:
-            return jsonify({"status": 500, "msg": str(e), "output": "Our genai model is taking too much time to load"})
+            return jsonify({"status": 500, "msg": str(e), "output": f"Our genai model is taking too much time to load {str(e)}"})
     
 @app.route('/api/register' , methods=["GET", "POST"])
 def register():
