@@ -1,11 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-world-ingress
+  name: aqi-ingress
 
 spec:
   rules:
-  - host: nginx.local
+  - host: aqi.spe
     http:
       paths:
         - path: /
