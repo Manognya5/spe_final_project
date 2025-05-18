@@ -1,0 +1,16 @@
+{"timestamp": "2025-05-18T15:03:24+0000", "service": "frontend", "level": "info", "message": "Logger configured successfully"}
+{"timestamp": "2025-05-18T15:05:19+0000", "service": "frontend", "level": "info", "message": "Received response of type: <class 'requests.models.Response'>"}
+{"timestamp": "2025-05-18T15:05:19+0000", "service": "frontend", "level": "info", "message": "aqi dumps size: 59194"}
+{"timestamp": "2025-05-18T15:05:19+0000", "service": "frontend", "level": "info", "message": "rendering home"}
+{"timestamp": "2025-05-18T15:05:37+0000", "service": "frontend", "level": "info", "message": "Response: <Response [200]>"}
+{"timestamp": "2025-05-18T15:05:37+0000", "service": "frontend", "level": "info", "message": "aqi dumps in login size: 59194"}
+{"timestamp": "2025-05-18T15:05:37+0000", "service": "frontend", "level": "info", "message": "encry pswd xvhu8"}
+{"timestamp": "2025-05-18T15:05:37+0000", "service": "frontend", "level": "info", "message": "Login response: {'msg': \"['xvhu8', 6]input pswqd: xvhu8, db_pswd: xvhu8login successfulinput pswqd: xvhu8, db_pswd: xvhu8\", 'status': 200, 'user_id': 6}"}
+{"timestamp": "2025-05-18T15:05:49+0000", "service": "frontend", "level": "info", "message": "session: 1"}
+{"timestamp": "2025-05-18T15:06:28+0000", "service": "frontend", "level": "info", "message": "Received response of type: <class 'requests.models.Response'>"}
+{"timestamp": "2025-05-18T15:06:28+0000", "service": "frontend", "level": "info", "message": "aqi dumps size: 59194"}
+{"timestamp": "2025-05-18T15:06:28+0000", "service": "frontend", "level": "info", "message": "rendering home"}
+{"timestamp": "2025-05-18T15:07:01+0000", "service": "frontend", "level": "info", "message": "Received response of type: <class 'requests.models.Response'>"}
+{"timestamp": "2025-05-18T15:07:01+0000", "service": "frontend", "level": "info", "message": "Response: <Response [200]>"}
+{"timestamp": "2025-05-18T15:07:01+0000", "service": "frontend", "level": "info", "message": "aqi dumps len in register: 59194"}
+{"timestamp": "2025-05-18T15:07:02+0000", "service": "frontend", "level": "info", "message": "Register response: {'msg': 'Registered. Please login to continue', 'status': 200}"}

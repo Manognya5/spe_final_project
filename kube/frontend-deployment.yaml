@@ -14,13 +14,15 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: frontend:v25
+        image: frontend:v3
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
         env:
         - name: BACKEND_URL
           value: "http://backend:5000"
+        - name: MODEL_URL
+          value: "http://model:5005"
 
         # Database connection details from secret
         - name: POSTGRES_USER

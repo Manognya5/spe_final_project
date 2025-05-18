@@ -13,6 +13,9 @@ kubectl create secret generic db-secret \
 
 kubectl exec -it postgres-74886b5bdb-ffvfk -- psql -U user -d aqi
 kubectl cp kube/init.sql postgres-85bd8d46f-vhjf9:/init.sql
+
+kubectl cp frontend-6bccb985c8-984mf:/var/log/app/frontend.log .
+
 kubectl exec -it postgres-685d55f7bc-9z5rj -- psql -U user -d aqi -f /init.sql
 
 kubectl get jobs --selector=job-name=aqi-fetch-job
@@ -87,5 +90,28 @@ printf "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: postgres-init-script
 sed 's/^/    /' init.sql >> postgres-init-scripts.yaml
 
 kubectl port-forward svc/backend 5001:5000
+
+
+helm repo add elastic https://helm.elastic.co
+helm repo update
+
+helm install elasticsearch elastic/elasticsearch -n elastic --create-namespace --set replicas=1
+helm install kibana elastic/kibana -n elastic
+wait fofr pods to be ready
+kubectl get pods -n elastic
+minikube service kibana -n elastic
+
+kubectl apply -f filebeat-config.yaml
+kubectl apply -f deameonest
+helm install metricbeat elastic/metricbeat -n elastic \
+  --set elasticsearch.hosts={"http://elasticsearch-master.elastic.svc.cluster.local:9200"}
+kubectl get pods -n elastic
+minikube service kibana -n elastic
+
+
+elastic: pPUWvZ2SHluCxTtqmanu@manu
+kubectl get secret elasticsearch-master-credentials -n elastic -o jsonpath="{.data.password}" | base64 --decode
+
+
 
 

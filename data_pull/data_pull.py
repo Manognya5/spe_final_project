@@ -5,7 +5,6 @@ import logging
 import json
 from datetime import datetime
 
-# Fetch API URL from environment variable
 api_key = '579b464db66ec23bdd0000012480e2afea3a46d35bcad4d927ee3849'
 
 # --- Database credentials from environment variables ---
@@ -14,6 +13,49 @@ db_name = os.getenv("POSTGRES_DB")
 db_user = os.getenv("POSTGRES_USER")
 db_password = os.getenv("POSTGRES_PASSWORD")
 
+def setup_logger():
+    log_dir = '/var/log/app'
+    os.makedirs(log_dir, exist_ok=True)
+
+    logger = logging.getLogger('frontend')
+    logger.setLevel(logging.INFO)
+    logger.handlers = []
+
+    file_handler = logging.FileHandler(f'{log_dir}/frontend.log', mode='a')
+    file_handler.setLevel(logging.INFO)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+
+    # Standard fields we want in every log line
+    STANDARD_FIELDS = ["city", "request_type", "count", "status"]
+
+    class JSONFormatter(logging.Formatter):
+        def format(self, record):
+            log_record = {
+                "timestamp": self.formatTime(record, "%Y-%m-%dT%H:%M:%S%z"),
+                "service": "frontend",
+                "level": record.levelname.lower(),
+                "message": record.getMessage()
+            }
+
+            # Ensure all standard fields are present
+            for field in STANDARD_FIELDS:
+                log_record[field] = getattr(record, field, "")
+
+            return json.dumps(log_record)
+
+    formatter = JSONFormatter()
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    logger.info("Logger configured successfully", extra={"count": "init", "city": "", "request_type":"", "status": "" })
+    return logger
+
+logger = setup_logger()
 
 def fetch_and_store():
     states_cities = [["West_Bengal", "Kolkata"], ["Karnataka", "Bengaluru"], ["Delhi", "Delhi"]]
@@ -31,7 +73,8 @@ def fetch_and_store():
         if response.status_code == 200:
             data = response.json()
             print(f"{city}: total={data['total']}, limit={data['limit']}, count={data['count']}, offset={data['offset']}")
-
+            logger.info(f"fetched records: {city}: total={data['total']}, limit={data['limit']}, count={data['count']}, offset={data['offset']}"
+                        , extra={"count": f"{data['total']}", "city": f"city", "request_type":"", "status": "" })
             for entry in data['records']:
                 station = entry['station']
                 pollutant = entry['pollutant_id']
@@ -54,6 +97,7 @@ def fetch_and_store():
                     print(last_updated)
         else:
             print(f"Failed to fetch data for {city}. Status code: {response.status_code}")
+            logger.error(f"Failed to fetch data for {city}. Status code: {response.status_code}")
             continue
 
     # # Save for debugging if needed
@@ -69,6 +113,7 @@ def fetch_and_store():
         )
         cursor = conn.cursor()
         print("Connected to database.")
+        logger.info("Connected to db in hourly cron")
 
         # --- Insert data into PostgreSQL ---
         count = 0
@@ -82,6 +127,7 @@ def fetch_and_store():
                     last_updated = datetime.strptime(raw_date, "%d-%m-%Y %H:%M:%S") if raw_date else None
                 except Exception as e:
                     print(f"Date parsing failed for {raw_date}: {e}")
+                    logger.error(f"Date parsing failed for {raw_date}: {e}")
                     last_updated = None
 
                 insert_query = """
@@ -124,11 +170,14 @@ def fetch_and_store():
 
         conn.commit()
         print(f"Data {count} inserted into database successfully.")
+        logger.info(f"Data {count} inserted into database successfully.")
+
         cursor.close()
         conn.close()
 
     except Exception as e:
         print("Database error:", e)
+        logger.error(f"Database error: str(e)")
 
 if __name__ == "__main__":
     fetch_and_store()
