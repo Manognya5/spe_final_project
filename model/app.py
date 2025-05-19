@@ -69,10 +69,6 @@ def predict():
     city_df = df[df['city_encoded'] == city_encoded]
     past_days_df = city_df[city_df['last_updated_day'] <= date].tail(30)
 
-    if past_days_df.shape[0] < 30:
-        print(f"Insufficient data: found only {past_days_df.shape[0]} rows")
-        return jsonify({"status": 200, "predicted_aqi_next_7_days": None, "msg": "insufficient data"})
-
     if len(past_days_df) < 30:
         return jsonify({"status": 400, "predicted_aqi_next_7_days": None, "error": "Not enough past data"})
 
@@ -101,4 +97,4 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,port=5005)
+    app.run(debug= True, host="0.0.0.0",port=5005)

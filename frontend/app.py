@@ -5,13 +5,10 @@ import psycopg2
 import json
 import logging
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.secret_key = 'secret'
 
-# Logger setup
-import logging
-import os
-import json
+
 
 def setup_logger():
     log_dir = '/var/log/app'
@@ -181,30 +178,116 @@ def recommend():
     else:
         return redirect("/")
 
+# @app.route('/predict', methods=['GET', 'POST'])
+# def predict():
+#     logger.info(f"session: {session.get('valid','')}")
+#     payload = {
+#                 'id': session.get('id',-1),
+#             }
+    
+#     if session['valid'] == 1:
+#         if request.method == 'GET':
+#             return render_template("predict.html")
+#         else:
+#             city = request.form['city']
+#             date = request.form['date']
+#             payload.update({
+#                 "city": city,
+#                 "date": date
+#             })
+#             response = requests.post(MODEL_URL + "/predict", json=payload)
+#             response = response.json()
+#             logging.info(f"Full response JSON: {response}")
+
+#                 # Use .get() with default values to avoid KeyError
+#             status = response.get('status', 'No status')
+#             msg = response.get('msg', 'No msg')
+#             predicted = response.get('predicted_aqi_next_7_days', [])
+#             output = response.get('output', 'No output key in response')
+#             logging.info(f"{status} recommend {msg} formatted data {predicted}")
+
+#             #logging.info(f"{response['status']} recommend {response['msg']} formatted data {response['predicted_aqi_next_7_days']}")
+#             return render_template("predicted.html", message=response['output'], predicted=response['predicted_aqi_next_7_days'])
+#     else:
+#         return redirect("/")
+
+# @app.route('/predict', methods=['GET', 'POST'])
+# def predict():
+#     # ... your code ...
+#     logger.info(f"session: {session.get('valid','')}")
+#     payload = {
+#                 'id': session.get('id',-1),
+#             }
+    
+#     if session['valid'] == 1:
+#         if request.method == 'GET':
+#             return render_template("predict.html")
+#         else:
+#             city = request.form['city']
+#             date = request.form['date']
+#             payload.update({
+#                 "city": city,
+#                 "date": date
+#             })
+#     response = requests.post(MODEL_URL + "/predict", json=payload)
+#     response_json = response.json()
+
+#     # Instead of accessing specific keys, just send whole JSON to template
+#     return render_template("predicted.html", raw_json=response_json)
+
+# @app.route('/predict', methods=['GET', 'POST'])
+# def predict():
+#     if session.get('valid') != 1:
+#         return jsonify({"error": "Unauthorized"}), 401
+
+#     if request.method == 'POST':
+#         data = request.get_json()
+#         city = data.get('city')
+#         date = data.get('date')
+
+#         payload = {
+#             "id": session.get('id', -1),
+#             "city": city,
+#             "date": date
+#         }
+
+#         response = requests.post(MODEL_URL + "/predict", json=payload)
+#         return jsonify(response.json())
+
+#     return render_template("predicted.html")
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
-    logger.info(f"session: {session.get('valid','')}")
-    payload = {
-                'id': session.get('id',-1),
-            }
-    
-    if session['valid'] == 1:
-        if request.method == 'GET':
-            return render_template("predict.html")
-        else:
-            city = request.form['city']
-            date = request.form['date']
-            payload.update({
+    logger.info(f"session: {session.get('valid', '')}")
+
+    if session.get('valid') != 1:
+        return redirect('/login')  # or render a 401 page
+
+    if request.method == 'GET':
+        return render_template("predict.html")
+    else:
+        try:
+            city = request.form.get('city')
+            date = request.form.get('date')
+
+            payload = {
+                "id": session.get('id', -1),
                 "city": city,
                 "date": date
-            })
-            response = requests.post(MODEL_URL + "/predict", json=payload)
-            response = response.json()
+            }
 
-            logging.info(f"{response['status']} recommend {response['msg']} formatted data {response['predicted_aqi_next_7_days']}")
-            return render_template("predicted.html", message=response['output'], predicted=response['predicted_aqi_next_7_days'])
-    else:
-        return redirect("/")
+            response = requests.post(MODEL_URL + "/predict", json=payload)
+
+            response.raise_for_status()  # raises exception for HTTP error
+            response_json = json.dumps(response.json())
+            logger.info(f"Full response JSON: {response_json}")
+        
+
+            return render_template("predicted.html",predicted=response_json, city=city, date=date)
+        except Exception as e:
+            logger.exception("Error during prediction")
+            return render_template("predicted.html", error="Something went wrong. Please try again."), 500
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     

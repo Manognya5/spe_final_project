@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: frontend:v3
+        image: frontend:v16
+
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
