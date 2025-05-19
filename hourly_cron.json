@@ -1,0 +1,6 @@
+{"timestamp": "2025-05-19T06:15:47+0000", "service": "cron", "level": "info", "message": "Logger configured successfully", "city": "", "request_type": "", "count": 0, "status": ""}
+{"timestamp": "2025-05-19T06:15:47+0000", "service": "cron", "level": "info", "message": "fetched records: Kolkata: total=42, limit=1000, count=42, offset=0", "city": "Kolkata", "request_type": "get", "count": 42, "status": "200"}
+{"timestamp": "2025-05-19T06:15:48+0000", "service": "cron", "level": "info", "message": "fetched records: Bengaluru: total=84, limit=1000, count=84, offset=0", "city": "Bengaluru", "request_type": "get", "count": 84, "status": "200"}
+{"timestamp": "2025-05-19T06:15:49+0000", "service": "cron", "level": "info", "message": "fetched records: Delhi: total=256, limit=1000, count=256, offset=0", "city": "Delhi", "request_type": "get", "count": 256, "status": "200"}
+{"timestamp": "2025-05-19T06:15:49+0000", "service": "cron", "level": "info", "message": "Connected to db in hourly cron", "city": "", "request_type": "", "count": 0, "status": ""}
+{"timestamp": "2025-05-19T06:15:49+0000", "service": "cron", "level": "info", "message": "Data 58 inserted into database successfully.", "city": "", "request_type": "", "count": 0, "status": ""}

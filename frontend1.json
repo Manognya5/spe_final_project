@@ -1,0 +1,19 @@
+{"timestamp": "2025-05-19T06:32:24+0000", "service": "frontend", "level": "info", "message": "Logger configured successfully", "user_id": "", "request_type": "", "action": "init", "status": ""}
+{"timestamp": "2025-05-19T06:32:35+0000", "service": "frontend", "level": "info", "message": "Received response of type: <class 'requests.models.Response'>", "user_id": "", "request_type": "get", "action": "home", "status": "200"}
+{"timestamp": "2025-05-19T06:32:35+0000", "service": "frontend", "level": "info", "message": "aqi dumps size: 59277", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:32:35+0000", "service": "frontend", "level": "info", "message": "rendering home", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:32:48+0000", "service": "frontend", "level": "info", "message": "session: 1", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:13+0000", "service": "frontend", "level": "info", "message": "Received response of type: <class 'requests.models.Response'>", "user_id": "6", "request_type": "get", "action": "user_home", "status": "200"}
+{"timestamp": "2025-05-19T06:33:13+0000", "service": "frontend", "level": "info", "message": "aqi dumps size: 59277", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:13+0000", "service": "frontend", "level": "info", "message": "rendering home", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:32+0000", "service": "frontend", "level": "info", "message": "Received response of type: <class 'requests.models.Response'>", "user_id": "6", "request_type": "get", "action": "user_home", "status": "200"}
+{"timestamp": "2025-05-19T06:33:32+0000", "service": "frontend", "level": "info", "message": "aqi dumps size: 59277", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:32+0000", "service": "frontend", "level": "info", "message": "rendering home", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:34+0000", "service": "frontend", "level": "info", "message": "Received response of type: <class 'requests.models.Response'>", "user_id": "", "request_type": "get", "action": "home", "status": "200"}
+{"timestamp": "2025-05-19T06:33:34+0000", "service": "frontend", "level": "info", "message": "aqi dumps size: 59277", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:34+0000", "service": "frontend", "level": "info", "message": "rendering home", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:35+0000", "service": "frontend", "level": "info", "message": "rendered login", "user_id": "", "request_type": "get", "action": "login", "status": "200"}
+{"timestamp": "2025-05-19T06:33:42+0000", "service": "frontend", "level": "info", "message": "Response: <Response [200]>", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:42+0000", "service": "frontend", "level": "info", "message": "aqi dumps in login size: 59277", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:42+0000", "service": "frontend", "level": "info", "message": "encry pswd xvhu8", "user_id": "", "request_type": "", "action": "", "status": ""}
+{"timestamp": "2025-05-19T06:33:42+0000", "service": "frontend", "level": "info", "message": "Login response: {'msg': \"['xvhu8', 6]input pswqd: xvhu8, db_pswd: xvhu8login successfulinput pswqd: xvhu8, db_pswd: xvhu8\", 'status': 200, 'user_id': 6}", "user_id": "", "request_type": "", "action": "", "status": ""}

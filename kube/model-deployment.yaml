@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: model
-        image: model:v3
+        image: model:v5
         imagePullPolicy: Never
         ports:
         - containerPort: 5005

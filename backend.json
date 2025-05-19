@@ -1,0 +1,10 @@
+{"timestamp": "2025-05-19T06:32:24+0000", "service": "backend", "level": "info", "message": "Logger configured successfully"}
+{"timestamp": "2025-05-19T06:32:35+0000", "service": "backend", "level": "info", "message": "Connected to the database successfully!"}
+{"timestamp": "2025-05-19T06:32:48+0000", "service": "backend", "level": "info", "message": "Connected to the database successfully!"}
+{"timestamp": "2025-05-19T06:33:01+0000", "service": "backend", "level": "info", "message": "Generated genai output"}
+{"timestamp": "2025-05-19T06:33:13+0000", "service": "backend", "level": "info", "message": "Connected to the database successfully!"}
+{"timestamp": "2025-05-19T06:33:32+0000", "service": "backend", "level": "info", "message": "Connected to the database successfully!"}
+{"timestamp": "2025-05-19T06:33:34+0000", "service": "backend", "level": "info", "message": "Connected to the database successfully!"}
+{"timestamp": "2025-05-19T06:33:42+0000", "service": "backend", "level": "info", "message": "Connected to the database successfully!"}
+{"timestamp": "2025-05-19T06:33:42+0000", "service": "backend", "level": "info", "message": "Connected to the database successfully!"}
+{"timestamp": "2025-05-19T06:33:42+0000", "service": "backend", "level": "info", "message": "6 logged in"}

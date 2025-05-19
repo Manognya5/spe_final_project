@@ -1,0 +1,43 @@
+---
+- name: Pull Docker Image from Docker Hub
+  hosts: localhost
+  remote_user: manu
+  become: false
+  tasks:
+    - name: Pull Docker Image Frontend
+      docker_image:
+        name: "manognya5/frontend"
+        source: pull
+      register: docker_pull_result_f
+
+    - name: Display Docker Pull Result frontend
+      debug:
+        var: docker_pull_result
+
+    - name: Pull Docker Image Backend
+      docker_image:
+        name: "manognya5/backend"
+        source: pull
+      register: docker_pull_result_b
+
+    - name: Display Docker Pull Result backend
+      debug:
+        var: docker_pull_result_b
+    - name: Pull Docker Image model
+      docker_image:
+        name: "manognya5/model"
+        source: pull
+      register: docker_pull_result_m
+
+    - name: Display Docker Pull Result model
+      debug:
+        var: docker_pull_result_m
+        
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+    - name: Apply kubernetes secrets
+      shell: kubectl apply -f kube/secret
+    - name: APply kubenertes manifest
+      shell: kubectl apply -f kube/

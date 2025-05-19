@@ -34,7 +34,7 @@ def setup_logger():
         def format(self, record):
             log_record = {
                 "timestamp": self.formatTime(record, "%Y-%m-%dT%H:%M:%S%z"),
-                "service": "frontend",
+                "service": "cron",
                 "level": record.levelname.lower(),
                 "message": record.getMessage()
             }
@@ -74,7 +74,7 @@ def fetch_and_store():
             data = response.json()
             print(f"{city}: total={data['total']}, limit={data['limit']}, count={data['count']}, offset={data['offset']}")
             logger.info(f"fetched records: {city}: total={data['total']}, limit={data['limit']}, count={data['count']}, offset={data['offset']}"
-                        , extra={"count": f"{data['total']}", "city": f"city", "request_type":"", "status": "" })
+                        , extra={"count": f"{data['total']}", "city": f"{city}", "request_type":"get", "status": "200" })
             for entry in data['records']:
                 station = entry['station']
                 pollutant = entry['pollutant_id']

@@ -14,7 +14,7 @@ kubectl create secret generic db-secret \
 kubectl exec -it postgres-74886b5bdb-ffvfk -- psql -U user -d aqi
 kubectl cp kube/init.sql postgres-85bd8d46f-vhjf9:/init.sql
 
-kubectl cp frontend-6bccb985c8-984mf:/var/log/app/frontend.log .
+kubectl cp frontend-6bccb985c8-984mf:/var/log/app/frontend.log ./frontend1.log
 
 kubectl exec -it postgres-685d55f7bc-9z5rj -- psql -U user -d aqi -f /init.sql
 

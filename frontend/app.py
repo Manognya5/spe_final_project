@@ -129,7 +129,7 @@ def login():
             response = requests.post(BACKEND_URL + "/api/login", json=payload)
             logger.info("Login response: %s", response.json())
             if response.json()['status'] != 200:
-                return render_template("index.html", message=response.json()['msg'], aqi_dumps=aqi_dumps)
+                return redirect("/home")
             else:
                 session['id'] = response.json()['user_id']
                 session['valid'] = 1
@@ -173,7 +173,7 @@ def recommend():
         response = requests.post(BACKEND_URL + "/api/recommendation", json=payload)
         response = response.json()
 
-        logging.info(f"{response['status']} recommend {response['msg']}", extra={"action": "home", "user_id": f"{session.get('user_id','')}", "request_type":"post", "status": f"{response['status']}"})
+        logging.info(f"{response['status']} recommend {response['msg']}", extra={"action": "home", "user_id": f"{session.get('id','')}", "request_type":"post", "status": f"{response['status']}"})
         return render_template("recommendation.html", message=response['output'])
     else:
         return redirect("/")
@@ -327,6 +327,11 @@ def register():
             logger.error("Error in register: %s", e)
             response = f"{e}"
         return render_template('index.html', message=response, aqi_dumps = aqi_dumps)
+@app.route("/logout")
+def logout():
+    session['valid'] = 0
+    session['id'] = 0
+    return redirect('/')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

@@ -19,13 +19,13 @@
               <a class="nav-link" href="#">AQI Live <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">AQI Prediction</a>
+              <a class="nav-link" href="/predict">AQI Prediction</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/pull_live_data">Pull live data</a>
-            </li>
+                <a class="nav-link" href="/datapull">Pull Live Data to DB</a>
+              </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Logout</a>
+              <a class="nav-link" href="/logout">Logout</a>
             </li>
             
           </ul>
@@ -34,7 +34,7 @@
     <div class="container py-4">
 
         <h2 class="mb-4">Today's Air Quality</h2>
-
+        <h3>{{message}}</h3>
         <div class="row g-3 mb-4">
             <div class="col-md-3">
                 <label for="stateSelect" class="form-label fw-semibold">State</label>
@@ -178,7 +178,11 @@
 
             if (entry) {
                 const pollutants = ['co', 'nh3', 'no2', 'ozone', 'pm10', 'pm2', 'so2'];
-                const aqi = Math.max(...pollutants.map(p => parseFloat(entry[`${p}_avg`])));
+                const aqi = Math.max(
+  ...pollutants
+    .map(p => parseFloat(entry[`${p}_avg`]))
+    .filter(val => val !== null && !isNaN(val))
+);
                 const pollutantName = pollutants.reduce((maxP, p) => parseFloat(entry[`${p}_avg`]) > parseFloat(entry[`${maxP}_avg`]) ? p : maxP, pollutants[0]).toUpperCase();
 
                 const aqiCategory = getAQICategory(aqi);

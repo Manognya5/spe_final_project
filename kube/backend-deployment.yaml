@@ -14,8 +14,13 @@ spec:
     spec:
       containers:
       - name: backend
-        image: backend:v3
+        image: backend:v5
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 10m
+          limits:
+            cpu: 20m
         ports:
         - containerPort: 5000
         env:

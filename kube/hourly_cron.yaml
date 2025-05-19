@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: api-fetcher
-            image: api-fetcher:v1
+            image: api-fetcher:v3
             imagePullPolicy: IfNotPresent
             env:
             - name: POSTGRES_USER

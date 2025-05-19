@@ -1,0 +1,16 @@
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "default", "pod": "backend-6f7f556b5-zcspr", "container": "backend", "cpu": 240689, "memory": 88740}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "default", "pod": "frontend-697b86b6dd-h65dc", "container": "frontend", "cpu": 243538, "memory": 38248}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "default", "pod": "postgres-74886b5bdb-v9jmc", "container": "postgres", "cpu": 151855, "memory": 55932}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "demo-basic-commands", "pod": "my-pod", "container": "my-container", "cpu": 0, "memory": 3440}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "ingress-nginx", "pod": "ingress-nginx-controller-56d7c84fd4-rtv27", "container": "controller", "cpu": 2121789, "memory": 78940}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kube-system", "pod": "coredns-668d6bf9bc-rxln5", "container": "coredns", "cpu": 2902414, "memory": 64236}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kube-system", "pod": "etcd-minikube", "container": "etcd", "cpu": 44979290, "memory": 284012}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kube-system", "pod": "kube-apiserver-minikube", "container": "kube-apiserver", "cpu": 80275960, "memory": 307220}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kube-system", "pod": "kube-controller-manager-minikube", "container": "kube-controller-manager", "cpu": 29826513, "memory": 58248}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kube-system", "pod": "kube-proxy-h6gzp", "container": "kube-proxy", "cpu": 420638, "memory": 77216}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kube-system", "pod": "kube-scheduler-minikube", "container": "kube-scheduler", "cpu": 19903835, "memory": 81216}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kube-system", "pod": "metrics-server-7fbb699795-bqncl", "container": "metrics-server", "cpu": 5710, "memory": 19096}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kube-system", "pod": "storage-provisioner", "container": "storage-provisioner", "cpu": 4044858, "memory": 10072}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kubernetes-dashboard", "pod": "dashboard-metrics-scraper-5d59dccf9b-mnk6p", "container": "dashboard-metrics-scraper", "cpu": 626559, "memory": 33672}
+{"timestamp": "2025-05-19T06:06:23.252219Z", "namespace": "kubernetes-dashboard", "pod": "kubernetes-dashboard-7779f9b69b-kcz2k", "container": "kubernetes-dashboard", "cpu": 438537, "memory": 10248}
+
