@@ -46,17 +46,17 @@ pipeline {
                 }
         }
 
-        stage("Push Docker Images to Docker Hub") {
-            steps {
-                script {
-                    docker.withRegistry('', 'DockerHubCred') {
-                        sh 'docker push ${DOCKERHUB_USER}/frontend:latest'
-                        sh 'docker push ${DOCKERHUB_USER}/backend:latest'
-                        sh 'docker push ${DOCKERHUB_USER}/model:latest'
-                    }
-                }
-            }
-        }
+        // stage("Push Docker Images to Docker Hub") {
+        //     steps {
+        //         script {
+        //             docker.withRegistry('', 'DockerHubCred') {
+        //                 sh 'docker push ${DOCKERHUB_USER}/frontend:latest'
+        //                 sh 'docker push ${DOCKERHUB_USER}/backend:latest'
+        //                 sh 'docker push ${DOCKERHUB_USER}/model:latest'
+        //             }
+        //         }
+        //     }
+        // }
 
 
         stage('Run Kubernetes Minikube Playbook') {
