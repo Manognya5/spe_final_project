@@ -1,6 +1,7 @@
 # playbook.yaml
 - name: Apply Kubernetes Manifests with Existing Minikube
   hosts: localhost
+  remote_user: manu
   vars:
     kubeconfig_path: "{{ lookup('env', 'KUBECONFIG') | default('~/.kube/config', true) }}"
   tasks:
