@@ -15,7 +15,7 @@ spec:
       containers:
       - name: model
         image: manognya5/model
-        imagePullPolicy: IFNotPresent
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5005
         env:
