@@ -1,22 +1,25 @@
-# playbook.yaml
-- name: Apply Kubernetes Manifests with Existing Minikube
+- name: Deploy to Kubernetes using existing Minikube
   hosts: localhost
-  remote_user: manu
   vars:
-    kubeconfig_path: "{{ lookup('env', 'KUBECONFIG') | default('~/.kube/config', true) }}"
+    # This should point to where Jenkins can access kubeconfig & minikube profiles
+    minikube_home: "/var/lib/jenkins"
+
   tasks:
-    - name: Check if kubectl is available
-      command: kubectl version --client
-      register: kubectl_check
-      failed_when: kubectl_check.rc != 0
-      changed_when: false
+    - name: Set environment variables for kubectl
+      set_fact:
+        minikube_env:
+          KUBECONFIG: "{{ minikube_home }}/.kube/config"
 
     - name: Apply all secrets
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
+      environment: "{{ minikube_env }}"
       shell: kubectl apply -f ./kube/secret
 
-    - name: Apply all Kubernetes manifests
-      environment:
-        KUBECONFIG: "{{ kubeconfig_path }}"
+    - name: Apply all Kubernetes manifests from ./kube directory
+      environment: "{{ minikube_env }}"
       shell: kubectl apply -f ./kube
+
+    - name: Reminder to export KUBECONFIG manually (for manual use)
+      debug:
+        msg: |
+          To access kubectl from your shell, run:
+          export KUBECONFIG={{ minikube_home }}/.kube/config
