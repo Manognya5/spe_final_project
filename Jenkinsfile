@@ -44,6 +44,8 @@ pipeline {
                         docker build -t ${DOCKERHUB_USER}/frontend:latest ./frontend
                         docker build -t ${DOCKERHUB_USER}/backend:latest ./backend
                         docker build -t ${DOCKERHUB_USER}/model:latest ./model
+                        docker build -t ${DOCKERHUB_USER}/api-fetcher:latest ./data_pull
+
                     '''
                 }
         }
@@ -55,6 +57,8 @@ pipeline {
                         minikube image load ${DOCKERHUB_USER}/frontend:latest
                         minikube image load ${DOCKERHUB_USER}/backend:latest
                         minikube image load ${DOCKERHUB_USER}/model:latest
+                        minikube image load ${DOCKERHUB_USER}/api-fetcher:latest
+
                     '''
                 }
         }

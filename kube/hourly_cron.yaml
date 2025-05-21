@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: api-fetcher
-            image: api-fetcher:v3
+            image: manognya5/api-fetcher
             imagePullPolicy: IfNotPresent
             env:
             - name: POSTGRES_USER
