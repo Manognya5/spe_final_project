@@ -5,6 +5,8 @@ pipeline {
         DOCKERHUB_USER = "manognya5"
         WORKSPACE_DIR = "/var/lib/jenkins/workspace/spe_final_project"
         GITHUB_REPO_URL = "https://github.com/Manognya5/spe_final_project.git"
+        KUBECONFIG = '/home/manu/.kube/config'  
+        ANSIBLE_FORCE_COLOR = 'true'
         
     }
 

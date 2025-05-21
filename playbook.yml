@@ -1,59 +1,21 @@
-- name: Deploy to Kubernetes with Minikube
+# playbook.yaml
+- name: Apply Kubernetes Manifests with Existing Minikube
   hosts: localhost
   vars:
-    minikube_home: "{{ lookup('env', 'WORKSPACE') }}"
+    kubeconfig_path: "{{ lookup('env', 'KUBECONFIG') | default('~/.kube/config', true) }}"
   tasks:
-
-    - name: Delete Minikube cluster if exists
-      shell: minikube delete
-      ignore_errors: yes
-
-    - name: Create ~/.kube and ~/.minikube directories
-      file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-      loop:
-        - "{{ minikube_home }}/.kube"
-        - "{{ minikube_home }}/.minikube"
-
-    - name: Set environment variables for Minikube
-      set_fact:
-        minikube_env:
-          MINIKUBE_HOME: "{{ minikube_home }}"
-          KUBECONFIG: "{{ minikube_home }}/.kube/config"
-
-    # - name: Disable fs.protected_regular to allow locking temp files
-    #   become: yes
-    #   command: sysctl fs.protected_regular=0
-
-    - name: Start Minikube using Docker driver
-      environment: "{{ minikube_env }}"
-      shell: |
-        minikube start --driver=docker --install-addons=true --delete-on-failure
-
-    - name: Enable Ingress addon in Minikube
-      environment: "{{ minikube_env }}"
-      shell: minikube addons enable ingress
-
-    - name: Wait for ingress-nginx-controller pod to be ready
-      environment: "{{ minikube_env }}"
-      shell: |
-        minikube kubectl -- wait --namespace ingress-nginx \
-        --for=condition=ready pod \
-        --selector=app.kubernetes.io/component=controller \
-        --timeout=120s
+    - name: Check if kubectl is available
+      command: kubectl version --client
+      register: kubectl_check
+      failed_when: kubectl_check.rc != 0
+      changed_when: false
 
     - name: Apply all secrets
-      environment: "{{ minikube_env }}"
-      shell: minikube kubectl -- apply -f ./kube/secret
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+      shell: kubectl apply -f ./kube/secret
 
-    - name: Apply all Kubernetes manifests from ./k8s directory
-      environment: "{{ minikube_env }}"
-      shell: minikube kubectl -- apply -f ./kube
-
-    - name: Reminder to export KUBECONFIG manually
-      debug:
-        msg: |
-          To access kubectl from your shell, run:
-          export KUBECONFIG={{ minikube_home }}/.kube/config
+    - name: Apply all Kubernetes manifests
+      environment:
+        KUBECONFIG: "{{ kubeconfig_path }}"
+      shell: kubectl apply -f ./kube
