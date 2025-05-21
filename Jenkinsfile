@@ -2,9 +2,7 @@ pipeline {
     agent any
 
     environment {
-        FRONTEND_IMAGE = "manognya5/frontend"
-        BACKEND_IMAGE = "manognya5/backend"
-        MODEL_IMAGE = "manognya5/model"
+        DOCKERHUB_USER = "manognya5"
         WORKSPACE_DIR = "/var/lib/jenkins/workspace/spe_final_project"
         GITHUB_REPO_URL = "https://github.com/Manognya5/spe_final_project.git"
         
@@ -37,29 +35,26 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images') {
-            steps {
-                sh '''
-                echo "Building Docker images..."
-                docker build -t ${FRONTEND_IMAGE} ./frontend
-                docker build -t ${BACKEND_IMAGE} ./backend
-                docker build -t ${MODEL_IMAGE} ./model
-                '''
-            }
+            stage("Build Docker Images") {
+                steps {
+                    sh '''
+                        echo "Building Docker images..."
+                        docker build -t ${DOCKERHUB_USER}/frontend:latest ./frontend
+                        docker build -t ${DOCKERHUB_USER}/backend:latest ./backend
+                        docker build -t ${DOCKERHUB_USER}/model:latest ./model
+                    '''
+                }
         }
 
-        stage("Stage 5 : Push Docker Image to Dockerhub"){
-            steps{
+        stage("Push Docker Images to Docker Hub") {
+            steps {
                 script {
                     docker.withRegistry('', 'DockerHubCred') {
-                    sh 'docker tag frontend manognya5/frontend:latest'
-                    sh 'docker push manognya5/frontend'
-                    sh 'docker tag backend manognya5/backend:latest'
-                    sh 'docker push manognya5/backend'
-                    sh 'docker tag model manognya5/model:latest'
-                    sh 'docker push manognya5/model'
+                        sh 'docker push ${DOCKERHUB_USER}/frontend:latest'
+                        sh 'docker push ${DOCKERHUB_USER}/backend:latest'
+                        sh 'docker push ${DOCKERHUB_USER}/model:latest'
+                    }
                 }
-            }
             }
         }
 
