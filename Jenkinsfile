@@ -6,7 +6,7 @@ pipeline {
         BACKEND_IMAGE = "manognya5/backend"
         MODEL_IMAGE = "manognya5/model"
         WORKSPACE_DIR = "/var/lib/jenkins/workspace/spe_final_project"
-        GIT_URL = "https://github.com/Manognya5/spe_final_project.git"
+        GITHUB_REPO_URL = "https://github.com/Manognya5/spe_final_project.git"
         
     }
 
