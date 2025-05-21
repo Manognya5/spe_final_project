@@ -23,9 +23,9 @@
           MINIKUBE_HOME: "{{ minikube_home }}"
           KUBECONFIG: "{{ minikube_home }}/.kube/config"
 
-    - name: Disable fs.protected_regular to allow locking temp files
-      become: yes
-      command: sysctl fs.protected_regular=0
+    # - name: Disable fs.protected_regular to allow locking temp files
+    #   become: yes
+    #   command: sysctl fs.protected_regular=0
 
     - name: Start Minikube using Docker driver
       environment: "{{ minikube_env }}"
