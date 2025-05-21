@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: model
-        image: model:v5
+        image: manognya5/model
         imagePullPolicy: Never
         ports:
         - containerPort: 5005

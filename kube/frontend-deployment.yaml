@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: frontend:v5
+        image: manognya5/frontend
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
