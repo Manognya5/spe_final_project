@@ -48,6 +48,17 @@ pipeline {
                 }
         }
 
+        stage("Build Docker Images") {
+                steps {
+                    sh '''
+                        echo "Building Docker images..."
+                        minikube image load ${DOCKERHUB_USER}/frontend:latest
+                        minikube image load ${DOCKERHUB_USER}/backend:latest
+                        minikube image load ${DOCKERHUB_USER}/model:latest
+                    '''
+                }
+        }
+
         // stage("Push Docker Images to Docker Hub") {
         //     steps {
         //         script {
