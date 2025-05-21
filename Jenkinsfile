@@ -22,19 +22,17 @@ pipeline {
                 sh '''
                 echo "Fixing Jenkins user permissions..."
 
-                # Add Jenkins to docker group
-                sudo usermod -aG docker jenkins
 
                 # Create required directories for minikube & kube if not present
-                sudo mkdir -p $WORKSPACE_DIR/.kube
-                sudo mkdir -p $WORKSPACE_DIR/.minikube
+                mkdir -p $WORKSPACE_DIR/.kube
+                mkdir -p $WORKSPACE_DIR/.minikube
 
                 # Set ownership and permissions
-                sudo chown -R jenkins:docker $WORKSPACE_DIR/.kube
-                sudo chown -R jenkins:docker $WORKSPACE_DIR/.minikube
+                chown -R jenkins:docker $WORKSPACE_DIR/.kube
+                chown -R jenkins:docker $WORKSPACE_DIR/.minikube
 
-                sudo chmod -R u+wrx $WORKSPACE_DIR/.kube
-                sudo chmod -R u+wrx $WORKSPACE_DIR/.minikube
+                chmod -R u+wrx $WORKSPACE_DIR/.kube
+                chmod -R u+wrx $WORKSPACE_DIR/.minikube
                 '''
             }
         }
