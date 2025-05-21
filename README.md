@@ -1,5 +1,5 @@
 # spe_final_project
-
+change
 kubectl create secret generic db-secret \
   --from-literal=POSTGRES_USER=user \
   --from-literal=POSTGRES_PASSWORD=password \
