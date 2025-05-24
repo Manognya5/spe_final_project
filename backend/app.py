@@ -70,15 +70,16 @@ def encrypt_password(password, shift=3):
             encrypted += char  # Leave special characters unchanged
     return encrypted
 
-def generate_recommendation(aqi, location, respiratory_ailments):
+def generate_recommendation(aqi, location, respiratory_ailments, pm2_5, pm_10):
     genai.configure(api_key="AIzaSyA_a9dk5E0LvqTsDl8n5qmGjOckX4p8T4M")
 
     model = genai.GenerativeModel("gemini-2.0-flash")
-    content = f"I stay in {location}, I have {respiratory_ailments} and taccording to the current AQI, can you generate some precautions to take and any emergency hospitals if required?"
+    
+    content = f"I stay in {location}, I have {respiratory_ailments} and the average pm 2.5 here is {pm2_5} and pm10 is {pm_10}. Can you give some precautions to take maximum 5 and can you give nearby hospitals for emergency in different sections, skip introduction line and direclty give the content in short"
 
     response = model.generate_content(content)
 
-    print(response.text)
+    # print(response.text)
     return response.text
 
 @app.route('/api/hello')
@@ -199,6 +200,9 @@ def recommend():
         html_code = 500
         msg = ""
         output = ""
+        repiratory_ailments = ""
+        permanent_location = ""
+        username = ""
         try:
             conn = -1
             try:
@@ -217,37 +221,54 @@ def recommend():
                 print("In this")
                 cur = conn.cursor()
             
-                cur.execute("SELECT permanent_location, respiratory_ailments from users WHERE id = %s", (id,))
+                cur.execute("SELECT permanent_location, respiratory_ailments, username from users WHERE id = %s", (id,))
                 
 
                 row = cur.fetchall()
                 row1 = list(itertools.chain(*row)) 
                 msg += f"{row1}"
 
+                
+
 
                 if len(row1) == 0:
                     html_code = 404
                     msg += "no user found"
                 else:
-                    repiratory_ailments = row1[1]
+                    respiratory_ailments = row1[1]
                     permanent_location = row1[0]
+                    username = row1[2]
+                    cur.execute(f"SELECT PM10_avg, PM2_avg FROM aqi_data_24hr where station = '{permanent_location}' ORDER BY last_updated DESC LIMIT 1;") 
+                    row2 = cur.fetchall()
+                    row2 = list(itertools.chain(*row2)) 
+                    msg += f"{row2}"
+                    if (len(row2)) >= 2:
+                        pm_10 = row2[0]
+                        pm_2 = row2[1]
+                    else:
+                        pm_10 = -1
+                        pm_2 = -1
+
 
                     result = ""
-                    output += generate_recommendation(result, permanent_location, repiratory_ailments)
+                    output += generate_recommendation(result, permanent_location, respiratory_ailments, pm_2, pm_10)
                     logger.info("Generated genai output")
                     print("genai op:" + output)
 
                 cur.close()
                 conn.close()
-                return jsonify({"status": html_code, "msg": msg, "output": output})
+                return jsonify({"status": html_code, "msg": msg, "output": output,
+                                 "location": permanent_location, "username": username, "respiratory_ailment": respiratory_ailments})
             else:
                 logger.error("Genai model didn't work as expected")
-                return jsonify({"status": 500, "msg": "no conn", "output": "Our genai model is taking too much time to load no conn"})
+                return jsonify({"status": 500, "msg": "no conn", "output": "Our genai model is taking too much time to load no conn",
+                                "location": permanent_location, "username": username, "respiratory_ailment": respiratory_ailments})
 
 
         except Exception as e:
             logger.error(f"Genai model didn't work as expected: {str(e)}")
-            return jsonify({"status": 500, "msg": str(e), "output": f"Our genai model is taking too much time to load {str(e)}"})
+            return jsonify({"status": 500, "msg": str(e), "output": f"Our genai model is taking too much time to load {str(e)}",
+                            "location": permanent_location, "username": username, "respiratory_ailment": respiratory_ailments})
     
 @app.route('/api/register' , methods=["GET", "POST"])
 def register():

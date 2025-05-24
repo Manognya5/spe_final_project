@@ -15,7 +15,7 @@ spec:
       containers:
       - name: backend
         image: manognya5/backend
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         resources:
           requests:
             cpu: 10m

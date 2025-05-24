@@ -1,118 +1,74 @@
-# spe_final_project
-change
-kubectl create secret generic db-secret \
-  --from-literal=POSTGRES_USER=user \
-  --from-literal=POSTGRES_PASSWORD=password \
-  --from-literal=POSTGRES_DB=aqi
+# Real-time Air Quality Index (AQI) Prediction System with DevOps Integration
 
-kubectl create secret generic db-secret \
-  --from-literal=POSTGRES_USER=user \
-  --from-literal=POSTGRES_PASSWORD=password \
-  --from-literal=POSTGRES_DB=aqi \
-  --dry-run=client -o yaml > secrets.yaml
+## Project Overview
 
-kubectl exec -it postgres-74886b5bdb-ffvfk -- psql -U user -d aqi
-kubectl cp kube/init.sql postgres-85bd8d46f-vhjf9:/init.sql
+This project is a **real-time Air Quality Monitoring and Forecasting System** that integrates live environmental data ingestion, machine learning forecasting, and DevOps automation. Users can view real-time AQI, get 7-day AQI forecasts, receive health-based recommendations, and interact with a full-stack system powered by modern DevOps practices.
 
-kubectl cp frontend-697b86b6dd-h65dc:/var/log/app/frontend.log ./frontend1.log
+## Key Features
 
+- **Live AQI Monitoring**: Fetches real-time air quality data from government APIs every hour using Kubernetes CronJobs.
+- **AQI Forecasting**: LSTM-based machine learning model predicts AQI for the next 7 days based on historical pollutant data.
+- **Smart Health Recommendations**: Uses Google GenAI to provide dynamic health suggestions based on AQI trends and user health data.
+- **Automated Data Pipeline**: Hourly CronJob to ingest and update AQI data.
+- **DevOps Integration**: Full CI/CD pipeline using Jenkins, Docker, Ansible, and Kubernetes (Minikube) with Ingress routing and log visualization via the ELK Stack.
 
-kubectl exec -it postgres-685d55f7bc-9z5rj -- psql -U user -d aqi -f /init.sql
+## Tech Stack
 
-kubectl get jobs --selector=job-name=aqi-fetch-job
-kubectl get cronjobs
-kubectl get jobs --watch
+- **Frontend**: Flask (HTML Templates)
+- **Backend**: Flask APIs
+- **ML Model**: LSTM (Keras), trained on 10 years of AQI data
+- **Database**: PostgreSQL
+- **DevOps**:
+  - CI/CD: Jenkins
+  - Containerization: Docker
+  - Configuration Management: Ansible
+  - Orchestration: Kubernetes + Minikube
+  - Monitoring: ELK Stack
+  - Secrets/Config Management: Kubernetes Secrets, ConfigMaps
+  - Auto-scaling: HPA
+  - Scheduled Jobs: CronJobs
 
-cron:
-docker build --no-cache -t api-fetcher:v1 ./data_pull
-minikube image load api-fetcher:v1
-kubectl apply -f kube/hourly_cron.yaml
-kubectl create job --from=cronjob/api-fetcher-cron manual-aqi-fetch6 //manuallly check the run
-kubectl logs job/manual-aqi-fetch6
+## Folder Structure
 
--- actual cron output
-kubectl get jobs
-kubectl get pods --selector=job-name=api-fetcher-cron-29124960
-kubectl describe pod api-fetcher-cron-29124960-zllvt
-kubectl logs
+- `frontend/`: Flask app serving the UI with authentication and data visualization
+- `backend/`: Flask API handling user requests and data communication
+- `model/`: LSTM model served as a microservice
+- `k8s/`: Kubernetes manifests for deployments, services, HPA, PVs, secrets, etc.
+- `jenkins/`: Jenkinsfile for CI/CD pipeline
+- `scripts/`: Data ingestion and initialization scripts
 
-minikube start --driver=docker
+## ML Model Overview
 
-        // JSON.parse(`{{ aqi_dumps|safe }}`);
-
-kubectl scale deployment --all --replicas=0
-kubectl scale deployment --all --replicas=1 to restart
-kubectl delete cronjob data-fetcher
-
-
-
-minikube addons enable ingress
-# 1. Build your local images
-docker build --no-cache -t backend:v1 ./backend
-docker build --no-cache -t frontend:v1 ./frontend
-
-docker build --no-cache -t manognya5/backend:v1 ./backend
-docker build --no-cache -t manognya5/frontend:v1 ./frontend
-docker login
-docker push manognya5/backend:v1
-docker push manognya5/frontend:v1
+- **Input Features**: PM10, PM2.5, NO2, NH3, SO2, CO, OZONE, city_encoded, dayofyear, month
+- **Model**: LSTM (1 hidden layer), trained on 30-day sliding window
+- **Output**: AQI predictions for next 7 days
+- **Accuracy**: >80% on test data
+- **Artifacts**: `lstm_model.h5`, `scaler_x.pkl`, `scaler_y.pkl`, `city_encoder.pkl`
 
 
+## DevOps Details
 
+- **Docker**: All services containerized for consistency
+- **Jenkins**: Automates code build, testing, and deployment
+- **Kubernetes**:
+  - Backend, frontend, model, DB, and CronJobs deployed as pods
+  - HPA for backend autoscaling
+  - Ingress for routing (e.g., `http://aqi.spe/`)
+  - Secrets, PV/PVC for secure and persistent data handling
+- **ELK Stack**: Visualizes logs and system metrics (CronJob stats, app logs)
 
+## Innovations
 
-# 2. Load them into Minikube
-minikube image load backend:v1 # manually load the local img
-minikube image load frontend:v1
-minikube image load frontend:v2
+- Embedded temporal and city metadata into the LSTM for better trend learning
+- GenAI-based dynamic health recommendations based on user profile and AQI levels
+- Auto-retraining future scope based on prediction drift
 
-# 3. Apply your Kubernetes manifests
-kubectl apply -f kube/secret/db-secret.yaml
-kubectl apply -f kube/
+## Future Scope
 
-# 4. Reload after changes!
-kubectl rollout restart deployment frontend // reload after postgress pod is running
-kubectl rollout restart deployment backend
+- Automate model retraining via Jenkins when accuracy drops
+- Integrate real-time notifications for AQI alerts
+- Expand to more cities and pollutants
 
-use kubectl describe <pod> for debugging
-open https://nginx.local/ to view website
-kubectl create configmap postgres-init-scripts --from-file=init.sql
+## Conclusion
 
-kubectl delete pod -l app=backend
-kubectl exec -it frontend-79d7885466-n8cp4 -- sh
-Start a temporary PostgreSQL pod:
-
-kubectl run postgres-client --rm -it --image=postgres -- /bin/bash
-
-Inside the pod
-psql -h postgres -U user -d aqi
-
-printf "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: postgres-init-scripts\ndata:\n  init.sql: |\n" > postgres-init-scripts.yaml
-sed 's/^/    /' init.sql >> postgres-init-scripts.yaml
-
-kubectl port-forward svc/backend 5001:5000
-
-
-helm repo add elastic https://helm.elastic.co
-helm repo update
-
-helm install elasticsearch elastic/elasticsearch -n elastic --create-namespace --set replicas=1
-helm install kibana elastic/kibana -n elastic
-wait fofr pods to be ready
-kubectl get pods -n elastic
-minikube service kibana -n elastic
-
-kubectl apply -f filebeat-config.yaml
-kubectl apply -f deameonest
-helm install metricbeat elastic/metricbeat -n elastic \
-  --set elasticsearch.hosts={"http://elasticsearch-master.elastic.svc.cluster.local:9200"}
-kubectl get pods -n elastic
-minikube service kibana -n elastic
-
-
-elastic: pPUWvZ2SHluCxTtqmanu@manu
-kubectl get secret elasticsearch-master-credentials -n elastic -o jsonpath="{.data.password}" | base64 --decode
-
-
-
-
+This project demonstrates a robust blend of machine learning, real-time data processing, and DevOps to build a scalable, maintainable, and impactful AQI monitoring system. It serves as a blueprint for environmental applications that require end-to-end automation and intelligence.

@@ -15,7 +15,7 @@ spec:
               name: frontend
               port:
                 number: 80
-        - path: /static/images/
+        - path: /static/
           pathType: Prefix
           backend:
             service:
