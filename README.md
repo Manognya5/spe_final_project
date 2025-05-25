@@ -61,7 +61,6 @@ This project is a **real-time Air Quality Monitoring and Forecasting System** th
 
 - Embedded temporal and city metadata into the LSTM for better trend learning
 - GenAI-based dynamic health recommendations based on user profile and AQI levels
-- Auto-retraining future scope based on prediction drift
 
 ## Future Scope
 
@@ -72,3 +71,5 @@ This project is a **real-time Air Quality Monitoring and Forecasting System** th
 ## Conclusion
 
 This project demonstrates a robust blend of machine learning, real-time data processing, and DevOps to build a scalable, maintainable, and impactful AQI monitoring system. It serves as a blueprint for environmental applications that require end-to-end automation and intelligence.
+
+changed for github webhook trigger
